@@ -20,8 +20,6 @@ ENV BUILD_SCRIPTS_DIR /opt/build_scripts
 
 # add entrypoint and build scripts
 COPY .docker $BUILD_SCRIPTS_DIR
-RUN chmod -R 777 $BUILD_SCRIPTS_DIR && \
-    chmod -R 777 $APP_BUNDLE_DIR
 
 # install base dependencies, build app, cleanup
 RUN cd $BUILD_SCRIPTS_DIR && \
@@ -32,7 +30,6 @@ RUN cd $BUILD_SCRIPTS_DIR && \
 
 # copy the app to the container
 COPY . $APP_SOURCE_DIR
-RUN chmod -R 777 $APP_SOURCE_DIR 
 
 # install Meteor, build app, clean up
 RUN cd $APP_SOURCE_DIR && \
@@ -42,6 +39,10 @@ RUN cd $APP_SOURCE_DIR && \
 
 # fix tunnel-ssh npm missing module
 RUN cp -R $APP_BUNDLE_DIR/bundle/programs/server/npm/node_modules/tunnel-ssh $APP_BUNDLE_DIR/bundle/programs/server/npm/node_modules/meteor/modules-runtime/node_modules/
+
+RUN chmod -R 777 $BUILD_SCRIPTS_DIR && \
+    chmod -R 777 $APP_BUNDLE_DIR && \
+    chmod -R 777 $APP_SOURCE_DIR 
 
 EXPOSE 3000
 USER node
