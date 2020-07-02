@@ -21,8 +21,7 @@ ENV BUILD_SCRIPTS_DIR /opt/build_scripts
 # add entrypoint and build scripts
 COPY .docker $BUILD_SCRIPTS_DIR
 RUN chmod -R 777 $BUILD_SCRIPTS_DIR && \
-    chmod -R 777 $APP_SOURCE_DIR && \
-    chmod -R 777 $APP_BUNDLE_DIR && \
+    chmod -R 777 $APP_BUNDLE_DIR
 
 # install base dependencies, build app, cleanup
 RUN cd $BUILD_SCRIPTS_DIR && \
@@ -33,6 +32,7 @@ RUN cd $BUILD_SCRIPTS_DIR && \
 
 # copy the app to the container
 COPY . $APP_SOURCE_DIR
+RUN chmod -R 777 $APP_SOURCE_DIR 
 
 # install Meteor, build app, clean up
 RUN cd $APP_SOURCE_DIR && \
